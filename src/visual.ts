@@ -47,6 +47,7 @@ export class Visual implements IVisual {
     private _scene: BABYLON.Scene;
     private _skybox: BABYLON.Mesh;
     private _hexaGrid: HexaGrid.HexaGrid;
+    private _externalResources: string =  "https://raw.githubusercontent.com/Servletparty/pbi-hexagrid/main/assets";
 
     constructor(options: VisualConstructorOptions) {
         console.log('Visual constructor', options);
@@ -57,8 +58,9 @@ export class Visual implements IVisual {
             options.element.append(this._canvas);
             this._engine = new BABYLON.Engine(this._canvas, true);
             this._scene =  new BABYLON.Scene(this._engine);
+            this.createSkybox();
 
-            this._hexaGrid = new HexaGrid.HexaGrid(this._scene);
+            this._hexaGrid = new HexaGrid.HexaGrid(this._scene, this._externalResources);
         }
     }
 
@@ -71,15 +73,16 @@ export class Visual implements IVisual {
         this._hexaGrid.DoRender(this._canvas, this._engine, this._scene);
     }
 
-    public createSkybox(scene: BABYLON.Scene) {
-        let sMaterial: BABYLON.StandardMaterial = new BABYLON.StandardMaterial("skyboxMaterial", scene);
+    public createSkybox() {
+        let sMaterial: BABYLON.StandardMaterial = new BABYLON.StandardMaterial("skyboxMaterial", this._scene);
         sMaterial.backFaceCulling = false;
-        sMaterial.reflectionTexture = new BABYLON.CubeTexture("assets/skybox", scene);
+        sMaterial.reflectionTexture = new BABYLON.CubeTexture(this._externalResources +"/skybox/skybox", this._scene);
         sMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
         sMaterial.disableLighting = true;
         
-        this._skybox = BABYLON.Mesh.CreateBox("skybox", 250, scene);
+        this._skybox = BABYLON.Mesh.CreateBox("skybox", 1200, this._scene);
         this._skybox.material = sMaterial;
+        this._skybox.applyFog = false;
     }
 
     private static parseSettings(dataView: DataView): VisualSettings {

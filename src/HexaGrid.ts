@@ -10,7 +10,7 @@ export class HexaGrid {
     private _camera: BABYLON.ArcRotateCamera;
     private _light: BABYLON.DirectionalLight;
 
-    constructor(scene: BABYLON.Scene) {
+    constructor(scene: BABYLON.Scene, externalResources: string) {
         this._grid = new BABYLON.Mesh("Grid", scene);
         this._grid.isVisible = false;
 
@@ -29,9 +29,9 @@ export class HexaGrid {
             new BABYLON.StandardMaterial("BrownMaterial", scene)
         ]
 
-        materials[0].diffuseTexture = new BABYLON.Texture("https://raw.githubusercontent.com/Servletparty/HexaGrid/master/Assets/images/blue.png", scene);
-        materials[1].diffuseTexture = new BABYLON.Texture("https://raw.githubusercontent.com/Servletparty/HexaGrid/master/Assets/images/green.png", scene);
-        materials[2].diffuseTexture = new BABYLON.Texture("https://raw.githubusercontent.com/Servletparty/HexaGrid/master/Assets/images/brown.png", scene);
+        materials[0].diffuseTexture = new BABYLON.Texture(externalResources + "/tiles/blue.png", scene);
+        materials[1].diffuseTexture = new BABYLON.Texture(externalResources + "/tiles/green.png", scene);
+        materials[2].diffuseTexture = new BABYLON.Texture(externalResources + "/tiles/brown.png", scene);
 
         let tile: BABYLON.Mesh = null;
         let random: number = 0;
