@@ -58,9 +58,8 @@ export class Visual implements IVisual {
             options.element.append(this._canvas);
             this._engine = new BABYLON.Engine(this._canvas, true);
             this._scene =  new BABYLON.Scene(this._engine);
-            this.createSkybox();
-
             this._hexaGrid = new HexaGrid.HexaGrid(this._scene, this._externalResources);
+            this.createSkybox();
         }
     }
 
@@ -78,11 +77,10 @@ export class Visual implements IVisual {
         sMaterial.backFaceCulling = false;
         sMaterial.reflectionTexture = new BABYLON.CubeTexture(this._externalResources +"/skybox/skybox", this._scene);
         sMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
-        sMaterial.disableLighting = true;
+        //sMaterial.disableLighting = true;
         
-        this._skybox = BABYLON.Mesh.CreateBox("skybox", 1200, this._scene);
+        this._skybox = BABYLON.Mesh.CreateBox("skybox", 1000, this._scene);
         this._skybox.material = sMaterial;
-        this._skybox.applyFog = false;
     }
 
     private static parseSettings(dataView: DataView): VisualSettings {

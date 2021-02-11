@@ -15,7 +15,7 @@ export class HexaGrid {
         this._grid.isVisible = false;
 
         this._prefab = BABYLON.Mesh.CreateCylinder("Cylinder", 1, 3, 3, 6, 1, scene, false);
-        this._prefab.scaling = new BABYLON.Vector3(3, 3, 3);
+        this._prefab.scaling = new BABYLON.Vector3(3, 0.1, 3);
         this._prefab.rotation.y += Math.PI / 6;
         let boundingInfo = this._prefab.getBoundingInfo();
 
@@ -39,6 +39,7 @@ export class HexaGrid {
         for (var z = 0; z < this._depth; z++) {
             for (var x = 0; x < this._width; x++) {
                 tile = this._prefab.clone();
+                tile.name = "tile-" + x + "-" + z;
                 tile.position = this.getWorldCoordinates(x, 0, z);
                 tile.position = new BABYLON.Vector3(x, 0, z);
 
@@ -93,31 +94,23 @@ export class HexaGrid {
 
     private highLightTile(event: any, scene: BABYLON.Scene): void {
         let highlightedTile = null;
-        let highlightedMaterial = new BABYLON.StandardMaterial("hlMat", scene);
+        let highlightedMaterial: BABYLON.StandardMaterial = new BABYLON.StandardMaterial("hlMat", scene);
         highlightedMaterial.diffuseColor = new BABYLON.Color3(1, 1, 1);
         highlightedMaterial.alpha = 0.8;
 
         let pick:BABYLON.PickingInfo = scene.pick(event.clientX, event.clientY);
 
-        if (pick.pickedMesh && pick.pickedMesh !== highlightedTile) {
+        if (pick.pickedMesh && pick.pickedMesh !== highlightedTile  && pick.pickedMesh.name != "skybox" ) {
+            console.log(pick.pickedMesh.name);
             let pickedMesh: any = pick.pickedMesh;
-
-            if (highlightedTile) {
-                highlightedTile.material = highlightedTile.oldMaterial;
-                highlightedTile.oldMaterial = null;
-            }
-
-            pickedMesh.oldMaterial = pickedMesh.material;
-            pickedMesh.material = highlightedMaterial;
-            highlightedTile = pickedMesh;
-
-            console.log("pick: " + pick);
-        }
-        else {
-            if (highlightedTile) {
-                highlightedTile.material = highlightedTile.oldMaterial;
-                highlightedTile.oldMaterial = null;
-                highlightedTile = null;
+            if(pickedMesh.oldMaterial){
+                let mat: BABYLON.StandardMaterial = pickedMesh.material;
+                pickedMesh.material = pickedMesh.oldMaterial
+                pickedMesh.oldMaterial = mat;
+            }else{    
+                pickedMesh.oldMaterial = pickedMesh.material;
+                pickedMesh.material = highlightedMaterial;
+                highlightedTile = pickedMesh;
             }
         }
     }
