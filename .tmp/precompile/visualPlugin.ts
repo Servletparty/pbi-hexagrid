@@ -5,9 +5,9 @@ import VisualConstructorOptions = powerbiVisualsApi.extensibility.visual.VisualC
 var powerbiKey: any = "powerbi";
 var powerbi: any = window[powerbiKey];
 
-var babylonTestC33AC33D78DB4689A1764916141363E6_DEBUG: IVisualPlugin = {
-    name: 'babylonTestC33AC33D78DB4689A1764916141363E6_DEBUG',
-    displayName: 'BabylonTest',
+var HexaGridC33AC33D78DB4689A1764916141363E6: IVisualPlugin = {
+    name: 'HexaGridC33AC33D78DB4689A1764916141363E6',
+    displayName: 'HexaGrid',
     class: 'Visual',
     apiVersion: '2.6.0',
     create: (options: VisualConstructorOptions) => {
@@ -23,7 +23,7 @@ var babylonTestC33AC33D78DB4689A1764916141363E6_DEBUG: IVisualPlugin = {
 if (typeof powerbi !== "undefined") {
     powerbi.visuals = powerbi.visuals || {};
     powerbi.visuals.plugins = powerbi.visuals.plugins || {};
-    powerbi.visuals.plugins["babylonTestC33AC33D78DB4689A1764916141363E6_DEBUG"] = babylonTestC33AC33D78DB4689A1764916141363E6_DEBUG;
+    powerbi.visuals.plugins["HexaGridC33AC33D78DB4689A1764916141363E6"] = HexaGridC33AC33D78DB4689A1764916141363E6;
 }
 
-export default babylonTestC33AC33D78DB4689A1764916141363E6_DEBUG;
+export default HexaGridC33AC33D78DB4689A1764916141363E6;

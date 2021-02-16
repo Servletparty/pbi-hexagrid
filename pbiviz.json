@@ -1,1 +1,25 @@
-{"visual":{"name":"HexaGrid","displayName":"HexaGrid","guid":"HexaGridC33AC33D78DB4689A1764916141363E6","visualClassName":"Visual","version":"1.0.0","description":"","supportUrl":"","gitHubUrl":""},"apiVersion":"2.6.0","author":{"name":"","email":""},"assets":{"icon":"assets/icon.png"},"externalJS":null,"style":"style/visual.less","capabilities":"capabilities.json","dependencies":null,"stringResources":[]}
+{
+    "visual": {
+        "name": "HexaGrid",
+        "displayName": "HexaGrid",
+        "guid": "HexaGridC33AC33D78DB4689A1764916141363E6",
+        "visualClassName": "Visual",
+        "version": "1.0.0",
+        "description": "BabylonJS prototype",
+        "supportUrl": "",
+        "gitHubUrl": ""
+    },
+    "apiVersion": "2.6.0",
+    "author": {
+        "name": "Rémi MARTIN",
+        "email": "remi.martin20@gmail.com"
+    },
+    "assets": {
+        "icon": "assets/icon.png"
+    },
+    "externalJS": null,
+    "style": "style/visual.less",
+    "capabilities": "capabilities.json",
+    "dependencies": null,
+    "stringResources": []
+}

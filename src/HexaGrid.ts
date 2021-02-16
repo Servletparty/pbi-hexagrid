@@ -11,18 +11,9 @@ export class HexaGrid {
     private _light: BABYLON.DirectionalLight;
 
     constructor(scene: BABYLON.Scene, externalResources: string) {
-        this._grid = new BABYLON.Mesh("Grid", scene);
-        this._grid.isVisible = false;
-
-        this._prefab = BABYLON.Mesh.CreateCylinder("Cylinder", 1, 3, 3, 6, 1, scene, false);
-        this._prefab.scaling = new BABYLON.Vector3(3, 0.1, 3);
-        this._prefab.rotation.y += Math.PI / 6;
-        let boundingInfo = this._prefab.getBoundingInfo();
-
-        this._width = (boundingInfo.maximum.z - boundingInfo.minimum.z) * this._prefab.scaling.x;
-        this._depth = (boundingInfo.maximum.x - boundingInfo.minimum.x) * this._prefab.scaling.z;
-        this._initialPosition = this.calculateInitialPosition();
-
+        //this._grid = new BABYLON.Mesh("Grid", scene);
+        //this._grid.skeleton
+        //this._grid.isVisible = false;
         let materials: BABYLON.StandardMaterial[] = [
             new BABYLON.StandardMaterial("BlueMaterial", scene),
             new BABYLON.StandardMaterial("GreenMaterial", scene),
@@ -33,46 +24,94 @@ export class HexaGrid {
         materials[1].diffuseTexture = new BABYLON.Texture(externalResources + "/tiles/green.png", scene);
         materials[2].diffuseTexture = new BABYLON.Texture(externalResources + "/tiles/brown.png", scene);
 
-        let tile: BABYLON.Mesh = null;
+        let coordsx: number[] = [0, 2, 3, 5, 6, 10, 12];
+        let coordsz: number[] = [0, 1, 2, 12, 14, 6, 3];
+        // let ground: BABYLON.Mesh = BABYLON.MeshBuilder.CreateGround("ground", {width: 10, height: 10}, scene);
+        // ground.position = new BABYLON.Vector3(0, 0, 0);
+        // let mat1: BABYLON.StandardMaterial = new BABYLON.StandardMaterial('mat1', scene);
+        // mat1.diffuseColor = new BABYLON.Color3(1, 0, 0);
+        // ground.material = mat1;
+
         let random: number = 0;
-
-        for (var z = 0; z < this._depth; z++) {
-            for (var x = 0; x < this._width; x++) {
-                tile = this._prefab.clone();
-                tile.name = "tile-" + x + "-" + z;
-                tile.position = this.getWorldCoordinates(x, 0, z);
-                tile.position = new BABYLON.Vector3(x, 0, z);
-
+        coordsx.forEach(x => {
+            coordsz.forEach(z => {
                 random = Math.floor(Math.random() * 10);
-
+                let height: number = Math.floor(Math.random() * 10);
+                let prefab: BABYLON.Mesh = BABYLON.Mesh.CreateCylinder("Cylinder", height, Math.random(), Math.random(), 24, 1, scene, false);
+                //let prefab: BABYLON.Mesh = BABYLON.Mesh.CreateCylinder("Cylinder", height, 0.1, 1, 24, 1, scene, false);
+                prefab.position = new BABYLON.Vector3(x, height, z);
                 if (random % 2 === 0) {
                     //tile.scaling.y += 3;
-                    tile.material = materials[0];
-                    tile.position = this.getWorldCoordinates(x, 0, z);
+                    prefab.material = materials[0];
+                    //tile.position = this.getWorldCoordinates(x, 0, z);
                 }
                 else if (random % 3 === 0) {
                     //tile.scaling.y += 6;
-                    tile.material = materials[2];
-                    tile.position = this.getWorldCoordinates(x, 0, z);
+                    prefab.material = materials[2];
+                    //tile.position = this.getWorldCoordinates(x, 0, z);
                 }
                 else {
                     //tile.scaling.y += 6;
-                    tile.material = materials[1];
-                    tile.position = this.getWorldCoordinates(x, 0, z);
+                    prefab.material = materials[1];
+                    //tile.position = this.getWorldCoordinates(x, 0, z);
                 }
+            });
+        });
 
-                tile.parent = this._grid;
-            }
-        }
-        this._prefab.dispose();
+        //this._prefab = BABYLON.Mesh.CreateCylinder("Cylinder", 1, 3, 3, 6, 1, scene, false);
+        //this._prefab = BABYLON.Mesh.CreateCylinder("Cylinder", 2, 0.1, 3, 24, 1, scene, false);
+        //this._prefab.position = new BABYLON.Vector3(0, 1, 0);
+        //this._prefab.scaling = new BABYLON.Vector3(3, 0.1, 3);
+        // this._prefab.rotation.y += Math.PI / 6;
+        //let boundingInfo = this._prefab.getBoundingInfo();
+
+        // this._width = (boundingInfo.maximum.z - boundingInfo.minimum.z) * this._prefab.scaling.x;
+        // this._depth = (boundingInfo.maximum.x - boundingInfo.minimum.x) * this._prefab.scaling.z;
+        // this._initialPosition = this.calculateInitialPosition();
+
+        
+
+        //this._prefab.material = materials[0];
+        // let tile: BABYLON.Mesh = null;
+        // let random: number = 0;
+
+        // for (var z = 0; z < this._depth; z++) {
+        //     for (var x = 0; x < this._width; x++) {
+        //         tile = this._prefab.clone();
+        //         tile.name = "tile-" + x + "-" + z;
+        //         tile.position = this.getWorldCoordinates(x, 0, z);
+        //         tile.position = new BABYLON.Vector3(x, 0, z);
+
+        //         random = Math.floor(Math.random() * 10);
+
+        //         if (random % 2 === 0) {
+        //             //tile.scaling.y += 3;
+        //             tile.material = materials[0];
+        //             tile.position = this.getWorldCoordinates(x, 0, z);
+        //         }
+        //         else if (random % 3 === 0) {
+        //             //tile.scaling.y += 6;
+        //             tile.material = materials[2];
+        //             tile.position = this.getWorldCoordinates(x, 0, z);
+        //         }
+        //         else {
+        //             //tile.scaling.y += 6;
+        //             tile.material = materials[1];
+        //             tile.position = this.getWorldCoordinates(x, 0, z);
+        //         }
+
+        //         tile.parent = this._grid;
+        //     }
+        // }
+        // this._prefab.dispose();
     }
 
     public DoRender(canvas: HTMLCanvasElement, engine: BABYLON.Engine, scene: BABYLON.Scene): void {
-        this._camera = new BABYLON.ArcRotateCamera("ArcRotateCamera", 1, 0.8, 120, new BABYLON.Vector3(0, 3, 0), scene);
+        this._camera = new BABYLON.ArcRotateCamera("ArcRotateCamera", 1, 0.8, 60, new BABYLON.Vector3(0, 0, 0), scene);
         scene.activeCamera = this._camera;
         scene.activeCamera.attachControl(canvas);
 
-        this._light = new BABYLON.DirectionalLight("DirLight", new BABYLON.Vector3(1, -1, 0), scene);
+        this._light = new BABYLON.DirectionalLight("DirLight", new BABYLON.Vector3(-1, -1, -1), scene);
         this._light.diffuse = new BABYLON.Color3(1, 1, 1);
         this._light.specular = new BABYLON.Color3(0.3, 0.3, 0.3);
         this._light.intensity = 1.5;
